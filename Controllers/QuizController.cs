@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 [ApiController]
-[Route("api/quizzes")]
-public class QuizController : ControllerBase
+[Route("api/[controller]")]
+public class QuizController : ControllerBase // Now resolves ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
@@ -11,26 +13,21 @@ public class QuizController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreateQuiz([FromBody] Quiz quiz)
+    public async Task<ActionResult<Quiz>> CreateQuiz([FromBody] Quiz quiz)
     {
         _context.Quizzes.Add(quiz);
         await _context.SaveChangesAsync();
-        return Ok(quiz);
+        return CreatedAtAction(nameof(GetQuiz), new { id = quiz.Id }, quiz);
     }
 
-    [HttpGet]
+    [HttpGet("{id}")]
     [Authorize]
-    public async Task<IActionResult> GetQuizzes()
+    public async Task<ActionResult<Quiz>> GetQuiz(int id)
     {
-        var quizzes = await _context.Quizzes.Include(q => q.Questions).ToListAsync();
-        return Ok(quizzes);
-    }
+        var quiz = await _context.Quizzes
+            .Include(q => q.Questions)
+            .FirstOrDefaultAsync(q => q.Id == id);
 
-    [HttpPost("{id}/submit")]
-    [Authorize]
-    public async Task<IActionResult> SubmitQuiz(int id, [FromBody] List<int> answers)
-    {
-        // Calculate score logic here...
-        return Ok(new { Score = calculatedScore });
+        return quiz ?? (ActionResult<Quiz>)NotFound();
     }
 }

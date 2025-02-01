@@ -1,0 +1,20 @@
+<EditForm Model="@registerModel" OnValidSubmit="@RegisterUser">
+    <InputText @bind-Value="registerModel.Email" placeholder="Email" />
+    <InputText @bind-Value="registerModel.Password" placeholder="Password" type="password" />
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private RegisterModel registerModel = new();
+    
+    private async Task RegisterUser()
+    {
+        var response = await Http.PostAsJsonAsync("api/auth/register", registerModel);
+        if (response.IsSuccessStatusCode) { /* Handle success */ }
+    }
+
+    private class RegisterModel {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}

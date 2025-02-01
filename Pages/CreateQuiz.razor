@@ -1,0 +1,28 @@
+<h3>Create a New Quiz</h3>
+<InputText @bind-Value="quizTitle" placeholder="Quiz Title" />
+@foreach (var question in questions)
+{
+    <InputText @bind-Value="question.Text" placeholder="Question Text" />
+    @for (int i = 0; i < question.Options.Count; i++)
+    {
+        <InputText @bind-Value="question.Options[i]" placeholder="Option @(i+1)" />
+        <button @onclick="() => question.CorrectOptionIndex = i">Mark as Correct</button>
+    }
+}
+<button @onclick="AddQuestion">Add Question</button>
+<button @onclick="SubmitQuiz">Submit Quiz</button>
+
+@code {
+    private string quizTitle;
+    private List<Question> questions = new();
+
+    private void AddQuestion() => questions.Add(new Question());
+    
+    private async Task SubmitQuiz()
+    {
+        var quiz = new Quiz { Title = quizTitle, Questions = questions };
+        await Http.PostAsJsonAsync("api/quizzes", quiz);
+        questions.Clear();
+        quizTitle = string.Empty;
+    }
+}

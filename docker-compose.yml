@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  # SQL Server Database
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: quizapp_db
+    environment:
+      SA_PASSWORD: "Password#123"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - quizapp-network
+
+  # Blazor Application
+  web:
+    image: quizapp-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=QuizDB;User=sa;Password=Password#123;
+    networks:
+      - quizapp-network
+
+volumes:
+  sql_data:
+
+networks:
+  quizapp-network:
+    driver: bridge
+

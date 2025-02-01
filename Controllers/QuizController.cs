@@ -1,8 +1,11 @@
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
-public class QuizController : ControllerBase // Now resolves ControllerBase
+public class QuizController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
@@ -27,7 +30,7 @@ public class QuizController : ControllerBase // Now resolves ControllerBase
         var quiz = await _context.Quizzes
             .Include(q => q.Questions)
             .FirstOrDefaultAsync(q => q.Id == id);
-
-        return quiz ?? (ActionResult<Quiz>)NotFound();
+            
+        return quiz != null ? Ok(quiz) : NotFound();
     }
 }

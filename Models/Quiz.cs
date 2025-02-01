@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class Quiz
 {
     public int Id { get; set; }
@@ -5,12 +7,11 @@ public class Quiz
     public ICollection<Question> Questions { get; set; }
 }
 
-
 public class Question
 {
     public int Id { get; set; }
     public string Text { get; set; }
-    public List<string> Options { get; set; } // JSON serialized in DB
+    public List<string> Options { get; set; }
     public int CorrectOptionIndex { get; set; }
 }
 

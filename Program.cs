@@ -1,14 +1,24 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-using Microsoft.AspNetCore.Identity;
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
+
+// Database configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.Configure<IdentityOptions>(options =>
 
+// Identity configuration
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+// Password requirements
+builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
@@ -17,5 +27,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = true;
 });
 
-Console.WriteLine("Hello, World!");
+var app = builder.Build();
 
+// Middleware configuration
+app.UseAuthorization();
+app.MapControllers();
+app.Run();

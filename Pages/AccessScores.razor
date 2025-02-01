@@ -1,0 +1,32 @@
+@page "/scores"
+@using System.Net.Http
+@inject HttpClient Http
+
+<h3>Your Quiz Results</h3>
+
+@if (scores == null)
+{
+    <p>Loading scores...</p>
+}
+else
+{
+    <div class="score-list">
+        @foreach (var scoreGroup in scores.GroupBy(s => s.QuizId))
+        {
+            <div class="score-card">
+                <h5>@scoreGroup.First().Quiz.Title</h5>
+                <p>Best Score: @scoreGroup.Max(s => s.Score)/@scoreGroup.First().Quiz.Questions.Count</p>
+                <p>Attempts: @scoreGroup.Count()</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<UserScore> scores = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        scores = await Http.GetFromJsonAsync<List<UserScore>>("api/quizzes/scores");
+    }
+}

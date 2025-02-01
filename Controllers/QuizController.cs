@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -5,6 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
+[HttpGet]
+[Authorize]
+public async Task<ActionResult<List<Quiz>>> GetQuizzes()
+{
+    return await _context.Quizzes.Include(q => q.Questions).ToListAsync();
+}
+
 public class QuizController : ControllerBase
 {
     private readonly ApplicationDbContext _context;

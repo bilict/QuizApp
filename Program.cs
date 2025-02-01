@@ -49,3 +49,14 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+// Add after builder.Services.AddAuthorization();
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+// Update middleware pipeline
+app.UseStaticFiles();
+app.UseRouting();
+
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");

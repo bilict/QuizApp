@@ -1,0 +1,37 @@
+@page "/quizzes"
+@using System.Net.Http
+@inject HttpClient Http
+
+<h3>Available Quizzes</h3>
+
+@if (quizzes == null)
+{
+    <p>Loading quizzes...</p>
+}
+else
+{
+    <div class="quiz-grid">
+        @foreach (var quiz in quizzes)
+        {
+            <div class="quiz-card">
+                <h5>@quiz.Title</h5>
+                <p>@quiz.Questions.Count questions</p>
+                <button @onclick="() => TakeQuiz(quiz.Id)" class="btn btn-primary">Start Quiz</button>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Quiz> quizzes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        quizzes = await Http.GetFromJsonAsync<List<Quiz>>("api/quizzes");
+    }
+
+    private void TakeQuiz(int quizId)
+    {
+        NavigationManager.NavigateTo($"/quiz/{quizId}");
+    }
+}

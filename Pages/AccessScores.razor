@@ -1,5 +1,6 @@
 @page "/scores"
 @using System.Net.Http
+@using System.Net.Http.Json
 @inject HttpClient Http
 
 <h3>Your Quiz Results</h3>
@@ -27,6 +28,25 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        scores = await Http.GetFromJsonAsync<List<UserScore>>("api/quizzes/scores");
+        scores = await Http.GetFromJsonAsync<List<UserScore>>("api/quizzes/scores") ?? new List<UserScore>();
+    }
+
+    public class UserScore
+    {
+        public int QuizId { get; set; }
+        public Quiz Quiz { get; set; }  // Ensure you have the proper structure for Quiz
+        public int Score { get; set; }
+    }
+
+    public class Quiz
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public List<Question> Questions { get; set; } = new();
+    }
+
+    public class Question
+    {
+        public string Text { get; set; } = string.Empty;
     }
 }

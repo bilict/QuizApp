@@ -1,0 +1,59 @@
+@page "/quiz"
+
+<h2 class="text-2xl font-semibold mb-4">Take the Quiz!</h2>
+
+@if (questions == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="space-y-6">
+        @foreach (var question in questions)
+        {
+            <div class="bg-white shadow-md rounded-lg p-4">
+                <h3 class="text-lg font-medium">@question.Text</h3>
+                <div class="mt-2 space-y-2">
+                    @foreach (var option in question.Options)
+                    {
+                        <button class="w-full text-left p-2 bg-gray-200 rounded-lg hover:bg-gray-300" @onclick="() => SelectAnswer(question.Id, option)">@option</button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <button class="mt-4 bg-blue-600 text-white p-2 rounded-lg" @onclick="SubmitQuiz">Submit Quiz</button>
+}
+
+@code {
+    private List<Question> questions;
+    private Dictionary<int, string> selectedAnswers = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate fetching questions from backend
+        questions = new List<Question>
+        {
+            new Question { Id = 1, Text = "What is the capital of France?", Options = new List<string> { "Paris", "London", "Berlin", "Rome" } },
+            new Question { Id = 2, Text = "What is 2 + 2?", Options = new List<string> { "3", "4", "5", "6" } }
+        };
+    }
+
+    private void SelectAnswer(int questionId, string answer)
+    {
+        selectedAnswers[questionId] = answer;
+    }
+
+    private void SubmitQuiz()
+    {
+        // Logic to process quiz submission
+        Console.WriteLine("Quiz submitted!");
+    }
+
+    public class Question
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public List<string> Options { get; set; }
+    }
+}

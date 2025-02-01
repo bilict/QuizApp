@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +40,10 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 var app = builder.Build();
+
+app.UseStaticFiles();
+app.UseRouting();
+
 
 // Middleware configuration
 app.UseAuthorization();

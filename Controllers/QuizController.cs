@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +46,32 @@ namespace YourNamespace
 
             return quiz != null ? Ok(quiz) : NotFound();
         }
+
+        [HttpPost("{id}/submit")]
+        [Authorize]
+        public async Task<IActionResult> SubmitQuiz(int id, [FromBody] List<int> answers)
+        {
+            var quiz = await _context.Quizzes
+                .Include(q => q.Questions)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (quiz == null) return NotFound();
+
+            int score = quiz.Questions
+                .Zip(answers, (q, a) => q.CorrectOptionIndex == a)
+                .Count(correct => correct);
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _context.UserScores.Add(new UserScore
+            {
+                UserId = userId,
+                QuizId = id,
+                Score = score
+            });
+
+            await _context.SaveChangesAsync();
+            return Ok(new { Score = score, Total = quiz.Questions.Count });
+        }
     }
 
     public class Quiz
@@ -55,12 +83,25 @@ namespace YourNamespace
 
     public class Question
     {
+        public int Id { get; set; }
         public string Text { get; set; }
         public List<string> Options { get; set; }
+        public int CorrectOptionIndex { get; set; } // Added this to compare answers
     }
 
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<UserScore> UserScores { get; set; }  // Ensure this is added
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    }
+
+    public class UserScore
+    {
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public int QuizId { get; set; }
+        public int Score { get; set; }
     }
 }

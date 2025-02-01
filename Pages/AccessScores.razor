@@ -5,14 +5,14 @@
 
 <h3>Your Quiz Results</h3>
 
-@if (scores == null)
+@if (_scores == null)
 {
     <p>Loading scores...</p>
 }
 else
 {
     <div class="score-list">
-        @foreach (var scoreGroup in scores.GroupBy(s => s.QuizId))
+        @foreach (var scoreGroup in _scores.GroupBy(s => s.QuizId))
         {
             <div class="score-card">
                 <h5>@scoreGroup.First().Quiz.Title</h5>
@@ -24,17 +24,18 @@ else
 }
 
 @code {
-    private List<UserScore> scores = new();
+    private List<UserScore> _scores = new();
 
     protected override async Task OnInitializedAsync()
     {
-        scores = await Http.GetFromJsonAsync<List<UserScore>>("api/quizzes/scores") ?? new List<UserScore>();
+        _scores = await Http.GetFromJsonAsync<List<UserScore>>("api/quizzes/scores") ?? new List<UserScore>();
     }
 
+    // If these are only used to deserialize data from API, you can keep them as they are.
     public class UserScore
     {
         public int QuizId { get; set; }
-        public Quiz Quiz { get; set; }  // Ensure you have the proper structure for Quiz
+        public Quiz Quiz { get; set; }
         public int Score { get; set; }
     }
 

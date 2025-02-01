@@ -17,6 +17,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthorization(options => 
+{
+    options.AddPolicy("Admin", policy => 
+        policy.RequireRole("Admin"));
+});
+
+
 // Password requirements
 builder.Services.Configure<IdentityOptions>(options =>
 {

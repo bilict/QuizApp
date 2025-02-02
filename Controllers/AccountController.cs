@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizApp.Data;
 using QuizApp.Models;
 using QuizApp.Utilities;
-
+using System.Threading.Tasks; 
 
 namespace QuizApp.Controllers
 {

@@ -1,0 +1,21 @@
+<AuthorizeView>
+    <Authorized>
+        <nav>
+            <ul>
+                <li><NavLink href="/quiz" Match="NavLinkMatch.All">Kvizovi</NavLink></li>
+                <Authorized Roles="Admin">
+                    <li><NavLink href="/admin/dashboard">Admin</NavLink></li>
+                </Authorized>
+                <li><NavLink href="/account/logout">Odjava</NavLink></li>
+            </ul>
+        </nav>
+    </Authorized>
+    <NotAuthorized>
+        <nav>
+            <ul>
+                <li><NavLink href="/account/login">Prijava</NavLink></li>
+                <li><NavLink href="/account/register">Registracija</NavLink></li>
+            </ul>
+        </nav>
+    </NotAuthorized>
+</AuthorizeView>

@@ -1,0 +1,21 @@
+@page "/admin/dashboard"
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>Admin Dashboard</h3>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <QuizApp.Frontend.Shared.NavMenu />
+        
+        <div class="admin-content">
+            <Routes>
+                <Route Path="/admin/questions" Match="NavLinkMatch.All">
+                    <Admin.Questions />
+                </Route>
+                <Route Path="/admin/users">
+                    <Admin.Users />
+                </Route>
+            </Routes>
+        </div>
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,22 @@
+@inject NavigationManager Navigation
+@attribute [AllowAnonymous]
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthState;
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            Navigation.NavigateTo("/account/login");
+        }
+        else if (!user.IsInRole("Admin"))
+        {
+            Navigation.NavigateTo("/access-denied");
+        }
+    }
+}

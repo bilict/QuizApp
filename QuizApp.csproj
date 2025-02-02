@@ -18,4 +18,26 @@
       <Content Include="Quiz.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\obj\Debug\net9.0\QuizApp.Frontend.sourcelink.json" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\obj\QuizApp.Frontend.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Properties\launchSettings.json" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\_Host.cshtml" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Layout\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Account\AccessDenied.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Account\Login.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Account\Register.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Admin\Dashboard.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Admin\Questions.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Admin\Users.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Quiz\Index.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Pages\Quiz\Take.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Shared\AuthRedirect.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Shared\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\Shared\NavMenu.razor" />
+      <_ContentIncludedByDefault Remove="QuizApp.Frontend\_Imports.razor" />
+    </ItemGroup>
+
 </Project>

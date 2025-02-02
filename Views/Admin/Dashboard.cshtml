@@ -1,0 +1,23 @@
+@model IEnumerable<QuizApp.Models.User>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+<h2>Admin Dashboard</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach(var user in Model)
+    {
+        <tr>
+            <td>@user.Username</td>
+            <td>@user.Role</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<p><a href="/Account/Logout">Logout</a></p>

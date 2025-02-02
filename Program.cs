@@ -1,40 +1,60 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuizApp.Data;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-builder.Services.AddControllers();
-builder.Services.AddAuthorization();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-var app = builder.Build();
-
-// Middleware configuration
-if (!app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
+    public static void Main(string[] args)
+    {
+        // Create builder for configuring the application
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Load connection string from appsettings.json
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+        // Configure EF Core with SQL Server database
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(connectionString));
+
+        // Configure cookie-based authentication
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login"; // Set login route
+                options.AccessDeniedPath = "/Account/AccessDenied"; // Set access denied route
+            });
+
+        // Enable support for MVC controllers and views
+        builder.Services.AddControllersWithViews();
+
+        // Build the application
+        var app = builder.Build();
+
+        // Configure middleware pipeline based on environment
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        // Enable authentication and authorization middleware
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        // Map default routes
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Quiz}/{action=Index}/{id?}");
+
+        // Run the application
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-app.MapControllers();
-
-app.Run();

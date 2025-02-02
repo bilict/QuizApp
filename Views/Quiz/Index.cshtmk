@@ -1,0 +1,16 @@
+@model QuizApp.Models.Quiz
+@{
+    ViewData["Title"] = "Quiz Overview";
+}
+<h2>@Model.Title</h2>
+<ul>
+    @foreach(var question in Model.Questions)
+    {
+        <li>
+            <a href="@Url.Action("Details", "Quiz", new { id = question.QuestionId })">
+                @question.Text
+            </a>
+        </li>
+    }
+</ul>
+<p><a href="/Account/Logout">Logout</a></p>

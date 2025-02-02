@@ -8,15 +8,22 @@
 
     <ItemGroup>
         <!-- Entity Framework Core for SQL Server -->
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1" />
 
         <!-- ASP.NET Core Identity -->
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
 
         <!-- FluentValidation for model validation (optional) -->
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.5.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" />
+
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="9.0.0" />
+        <PackageReference Include="System.Net.Http.Json" Version="2.3.0" />
 
         <!-- Authentication with Cookies -->
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="8.0.0" />

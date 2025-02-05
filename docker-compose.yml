@@ -28,7 +28,7 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=QuizDB;User=sa;Password=Password#123;
+      - ConnectionStrings__DefaultConnection=Server=localhost;Database=QuizDB;User=sa;Password=Password#123;
     networks:
       - quizapp-network
 
